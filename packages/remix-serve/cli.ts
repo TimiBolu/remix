@@ -132,7 +132,11 @@ async function run() {
     })
   );
   app.use(express.static("public", { maxAge: "1h" }));
-  app.use(morgan("tiny"));
+  app.use(morgan('tiny', {
+    skip: function (req) {
+      return req.path === "/health-check"; // Skip health-check route
+    },
+  }));
 
   app.all(
     "*",
